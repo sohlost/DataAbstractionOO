@@ -3,6 +3,50 @@ namespace ds {
 template <typename T>
 LinkedListStorage<T>::~LinkedListStorage() { clear(); }
 
+// Copy Constructor
+template <typename T>
+LinkedListStorage<T>::LinkedListStorage(const LinkedListStorage& other) {
+    for (const auto& item : other) {
+        push_back(item);
+    }
+}
+
+// Move Constructor
+template <typename T>
+LinkedListStorage<T>::LinkedListStorage(LinkedListStorage&& other) noexcept {
+    head_ = other.head_;
+    tail_ = other.tail_;
+    n_ = other.n_;
+    other.head_ = other.tail_ = nullptr;
+    other.n_ = 0;
+}
+
+// Copy Assignment
+template <typename T>
+LinkedListStorage<T>& LinkedListStorage<T>::operator=(const LinkedListStorage& other) {
+    if (this != &other) {
+        clear();
+        for (const auto& item : other) {
+            push_back(item);
+        }
+    }
+    return *this;
+}
+
+// Move Assignment
+template <typename T>
+LinkedListStorage<T>& LinkedListStorage<T>::operator=(LinkedListStorage&& other) noexcept {
+    if (this != &other) {
+        clear();
+        head_ = other.head_;
+        tail_ = other.tail_;
+        n_ = other.n_;
+        other.head_ = other.tail_ = nullptr;
+        other.n_ = 0;
+    }
+    return *this;
+}
+
 template <typename T>
 void LinkedListStorage<T>::clear() {
   Node* p = head_;
@@ -61,4 +105,3 @@ template <typename T>
 bool LinkedListStorage<T>::empty() const { return n_ == 0; }
 
 } // namespace ds
-
