@@ -1,76 +1,88 @@
-# Data Abstraction & Object Orientation Assignment  
+# Functional Data Structures & Algorithms - API Demos
 
-This project implements *Stacks, Queues, Deques, and Priority Queues* using C++ templates, following the plan from Tutorial 17–24 Sept.  
+This project implements a **Functional Programming Framework** on top of C++ Data Structures. 
+The core deliverable is the **Developer API** which allows immutable transformations (`map`, `filter`, `reduce`) on standard containers.
 
----
-
-## 1. The Top Level (Toolchains)  
-- *Compiler*: g++ (C++17 standard)  
-- *Build system*: Simple g++ CLI invocation (can be extended to CMake for modular builds).  
-- *Front-end*: The user interacts via main.cpp, which demonstrates container operations by printing to the console.  
-- *Libraries used*: Standard C++ library (STL) for std::vector, std::algorithm (push_heap, pop_heap). No external dependencies.  
+We provide multiple demo files to showcase different aspects of the API.
 
 ---
 
-## 2. The Base (Foundation Classes & Boilerplate)  
-- **Interfaces (interfaces.hpp):  
-  - IContainer (size/empty)  
-  - IStack<T>  
-  - IQueue<T>  
-  - IDeque<T>  
-  - IPriorityQueue<T, Compare>  
+## 🚀 Quick Start (Pipeline Simulator)
 
-- **Storage engines (storage.hpp):  
-  - LinkedListStorage<T>: custom doubly linked list for front/back ops.  
-  - VectorHeapStorage<T, Compare>: wrapper over std::vector with heap functions.  
+To interact with the "Shell-like" pipeline simulator (a proof-of-concept for the API), run:
 
-- **Concrete containers (containers.hpp):  
-  - StackList<T>, QueueList<T>, DequeList<T> → LinkedListStorage<T>  
-  - PriQueueList<T, Compare> → VectorHeapStorage<T, Compare>  
+```bash
+./run_demo.sh
+```
+*(This compiles everything and launches the `cli_pipeline` tool)*
 
-This separation ensures *abstraction* (interfaces), *encapsulation* (storage internals hidden), and *flexibility* (containers can swap underlying engines if needed).  
+**Sample Pipeline Commands to Try:**
+```bash
+# 1. Basic Filter & Map
+manual 1 2 3 4 5 | filter > 2 | map * 10 | show
 
----
+# 2. Complex Analysis (Sort & Inversions)
+manual 10 50 5 1 20 | sort desc | show | inversions
 
-## 3. The Manufacturing (Development & Testing)  
-- *IDE / Editor*: VS Code with C++ extension (though any C++ IDE can be used).  
-- *Development process*:  
-  1. Defined abstract interfaces first (behavior contract).  
-  2. Implemented independent storage engines.  
-  3. Built concrete containers by composition (interface + storage).  
-  4. Wrote main.cpp demo for quick testing.  
+# 3. Data Aggregation (Sum)
+manual 1 2 3 4 5 | sum
 
-- *Testing process*:  
-  - Verified correctness of push/pop/size/empty for each container type.  
-  - Checked exception safety (e.g., popping from empty container).  
-  - Confirmed heap property for PriQueueList.  
-
-- *Cycle*: Iterative refinement → compile → run demo → debug.  
+# 4. Chained Operations
+manual 5 10 15 20 | filter > 5 | map + 1 | sort asc | show
+```
 
 ---
 
-## 4. The Team  
-- *Team Members*:  
-  - [Shashwat Patni]  
-  - [Soham Dambalkar]  
-  - [Jainil Alpesh Shah]  
+## 💻 Developer API Demos (Code Examples)
 
-- *Roles*:  
-  - [Shashwat Patni] – Interface design (interfaces.hpp)  
-  - [Soham Dambalkar] – Storage engine implementation (storage.hpp)  
-  - [Jainil Alpesh Shah] – Concrete containers (containers.hpp)  
+The true power of the library is demonstrated in the following C++ examples. You can compile and run each to see the output.
 
-- *Division of labour*: Planned as modular ownership of files with integration checks during testing.  
+### 1. Complex Data Pipeline (Assignment Use-Case)
+**File:** `assignment_usecase.cpp`
+**Demonstrates:** 
+*   Loading files, tokenizing words, filtering by keyword, counting frequencies, and sorting.
+*   Uses `flatMap` -> `filter` -> `map` -> `reduce` -> `sort` pipeline.
+*   **Note:** Run with arguments: `./assignment_usecase keywords.txt data_directory`
+
+### 2. Core Functional Transformations
+**File:** `demo_containers_functional.cpp`
+**Demonstrates:** 
+*   Transforming a **Stack** (LIFO) using `filter` and `map` *without* popping elements.
+*   Calculating the sum of a **Priority Queue** using `reduce`.
+*   **Code Highlight:**
+    ```cpp
+    auto result = ds::map(
+        ds::filter(myStack, isEven), // Returns new list, Stack stays intact
+        square
+    );
+    ```
+
+### 3. Generic Algorithms
+**File:** `demo_generic.cpp`
+**Demonstrates:** 
+*   Using our `ds::map` and `ds::filter` on **Standard Library** containers like `std::vector` and `std::list`.
+*   Shows the library's interoperability with standard C++.
 
 ---
 
-## Interdependence vs Independence  
-- *Independence*:  
-  - Interfaces abstract away the underlying storage.  
-  - Storage engines are usable independently of specific behaviors.  
+## 🛠 Build & Run
 
-- *Interdependence*:  
-  - Concrete containers depend on both the interface (for behavior contract) and the storage engine (for implementation).  
-  - Example: StackList<T> implements IStack<T> while internally using LinkedListStorage<T>.  
+You can build all demos using the Makefile:
 
-This separation demonstrates *data abstraction* (users only see the interface) and *object orientation* (composition, encapsulation, extensibility).
+```bash
+make all
+```
+
+Then run specific demos:
+```bash
+./assignment_usecase <keywords_file> <data_dir> # (assignment_usecase.cpp)
+./demo_functional                               # (demo_containers_functional.cpp)
+./demo_generic                                  # (demo_generic.cpp)
+```
+
+---
+
+## 👥 Team
+- [Shashwat Patni]
+- [Soham Dambalkar]
+- [Jainil Alpesh Shah]

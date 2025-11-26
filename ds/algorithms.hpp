@@ -7,3 +7,4 @@
 #include "algorithms/ForEach.hpp"
 #include "algorithms/FlatMap.hpp"
 #include "algorithms/Sort.hpp"
+#include "algorithms/CountInversions.hpp"
