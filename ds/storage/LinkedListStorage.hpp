@@ -17,6 +17,8 @@ class LinkedListStorage {
   std::size_t n_{0};
 
 public:
+  using value_type = T;
+
   LinkedListStorage() = default;
   ~LinkedListStorage();
   
